@@ -20,8 +20,7 @@ public class HolidaySketch extends PApplet {
     private Random random = new Random();
     
     public void setup() {
-    	if (!is_setup)
-		{
+    	if (!is_setup) {
 			is_setup = true;
 			size(720, 1024, OPENGL);
 			hint(ENABLE_OPENGL_4X_SMOOTH);
@@ -34,9 +33,7 @@ public class HolidaySketch extends PApplet {
 	}
 	
 	public void draw() {
-	    int background = 0xcb582c;
-	    background(background);
-
+	    background(0xffcb582c);
 	    stroke(0x33ffffff);
 	    noFill();
 
