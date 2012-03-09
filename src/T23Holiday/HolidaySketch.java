@@ -58,8 +58,10 @@ public class HolidaySketch extends PApplet {
 		float textX = midX - textWidth / 2.0f;
 		float textY = midY - textHeight / 2.0f;
 		
-		text("THE BEST WAY TO PREDICT THE FUTURE IS TO INVENT IT", textX, textY, textWidth, textHeight, 40.0f);
-
+		for (int i = 35; i < 50; i++) {
+			text("THE BEST WAY TO PREDICT THE FUTURE IS TO INVENT IT", textX, textY, textWidth, textHeight, (float)i);
+		}
+		
 		// Use the mouse location to move the camera
 	    float xPer = ((float)mouseX) / (float)width;
 	    float yPer = ((float)mouseY) / (float)height;
