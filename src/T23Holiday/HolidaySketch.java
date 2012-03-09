@@ -11,6 +11,11 @@ import processing.core.*;
 
 @SuppressWarnings("serial")
 public class HolidaySketch extends PApplet {
+	
+	public enum Direction {
+	    UP, RIGHT, DOWN, LEFT
+	};
+
 	Boolean is_setup = false;
 
 	ArrayList<Triangle> triangles = new ArrayList<Triangle>();
@@ -19,6 +24,13 @@ public class HolidaySketch extends PApplet {
     private Random random = new Random();
     private int fontSize = 120;
     
+    private float rotationX = 20;
+    private float rotationY = 20;
+    
+    private Direction rotationDirection;
+    
+    private boolean isAutoRotating = true;
+    
     public void setup() {
     	if (!is_setup) {
 			is_setup = true;
@@ -26,7 +38,7 @@ public class HolidaySketch extends PApplet {
 			hint(ENABLE_OPENGL_4X_SMOOTH);
 		}
     	
-    	strokeWeight(1.5f);
+    	strokeWeight(1.4f);
     	smooth();
 
 		textFont(createFont("franchise-bold-webfont.ttf", fontSize)); 
@@ -34,8 +46,18 @@ public class HolidaySketch extends PApplet {
 		
         points = generateRandomPoints();
         triangles = Triangulate.triangulate(points);
+        
+        rotationDirection = Direction.RIGHT;
 	}
 	
+    public void keyPressed() {
+    	if (key == 'm') {
+    		isAutoRotating = !isAutoRotating;
+    		rotationDirection = Direction.RIGHT;
+    		rotationX = rotationY = 20.0f;
+    	}
+    }
+    
 	public void draw() {
 	    background(0xffcb582c);
 	    stroke(0x33ffffff);
@@ -62,9 +84,40 @@ public class HolidaySketch extends PApplet {
 			text("THE BEST WAY TO PREDICT THE FUTURE IS TO INVENT IT", textX, textY, textWidth, textHeight, (float)i);
 		}
 		
-		// Use the mouse location to move the camera
-	    float xPer = ((float)mouseX) / (float)width;
-	    float yPer = ((float)mouseY) / (float)height;
+		if (isAutoRotating) {
+			switch (rotationDirection) {
+				case RIGHT:
+					rotationX++;
+					if (rotationX == width - 20) {
+						rotationDirection = Direction.DOWN;
+					}
+					break;
+				case DOWN:
+					rotationY++;
+					if (rotationY == height - 20) {
+						rotationDirection = Direction.LEFT;
+					}
+					break;
+				case LEFT:
+					rotationX--;
+					if (rotationX == 20) {
+						rotationDirection = Direction.UP;
+					}
+					break;
+				case UP:
+					rotationY--;
+					if (rotationY == 20) {
+						rotationDirection = Direction.LEFT;
+					}
+					break;
+			}
+		} else {
+			rotationX = mouseX;
+			rotationY = mouseY;
+		}
+		
+	    float xPer = (rotationX) / (float)width;
+	    float yPer = (rotationY) / (float)height;
 	    
 	    float eyeX = midX + (xPer - 0.5f) * midX * 0.57f;
 	    float eyeY = midY + (yPer - 0.5f) * midY * 0.57f;
