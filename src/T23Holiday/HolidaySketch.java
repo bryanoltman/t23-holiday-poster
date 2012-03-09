@@ -6,7 +6,6 @@ import java.util.Random;
 import org.processing.wiki.triangulate.*;
 
 import processing.core.*;
-import processing.opengl.*;
 
 // Big ups to http://wiki.processing.org/w/Triangulation
 
@@ -27,6 +26,7 @@ public class HolidaySketch extends PApplet {
 			hint(ENABLE_OPENGL_4X_SMOOTH);
 		}
     	
+    	strokeWeight(1.5f);
     	smooth();
 
 		textFont(createFont("franchise-bold-webfont.ttf", fontSize)); 
