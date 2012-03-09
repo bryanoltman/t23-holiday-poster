@@ -52,8 +52,8 @@ public class HolidaySketch extends PApplet {
 	    float xPer = ((float)mouseX) / (float)width;
 	    float yPer = ((float)mouseY) / (float)height;
 	    
-	    float eyeX = midX + (xPer - 0.5f) * midX * 0.5f;
-	    float eyeY = midY + (yPer - 0.5f) * midY * 0.5f;
+	    float eyeX = midX + (xPer - 0.5f) * midX * 0.57f;
+	    float eyeY = midY + (yPer - 0.5f) * midY * 0.57f;
 	    	    
 	    camera(eyeX, eyeY, (midY / tan(PI*60.0f / 360.0f)) / 1.2f, midX, midY, 0.0f, 0.0f, 1.0f, 0.0f);
 	}
