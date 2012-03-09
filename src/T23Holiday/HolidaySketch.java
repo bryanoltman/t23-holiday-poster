@@ -18,6 +18,7 @@ public class HolidaySketch extends PApplet {
 	ArrayList<PVector> points = new ArrayList<PVector>();
     private static int pointCount = 5000;
     private Random random = new Random();
+    private int fontSize = 120;
     
     public void setup() {
     	if (!is_setup) {
@@ -27,7 +28,10 @@ public class HolidaySketch extends PApplet {
 		}
     	
     	smooth();
-    	
+
+		textFont(createFont("franchise-bold-webfont.ttf", fontSize)); 
+		textAlign(CENTER);
+		
         points = generateRandomPoints();
         triangles = Triangulate.triangulate(points);
 	}
@@ -36,7 +40,8 @@ public class HolidaySketch extends PApplet {
 	    background(0xffcb582c);
 	    stroke(0x33ffffff);
 	    noFill();
-
+	    		    
+		// Draw the triangle edges
 	    for (Triangle t : triangles) {
 	    	line(t.p1.x, t.p1.y, t.p1.z, t.p2.x, t.p2.y, t.p2.z);
 	    	line(t.p2.x, t.p2.y, t.p2.z, t.p3.x, t.p3.y, t.p3.z);
@@ -45,7 +50,17 @@ public class HolidaySketch extends PApplet {
 	    
 	    float midX = (float)width / 2.0f;
 	    float midY = (float)height / 2.0f;
-	    
+
+	    // Draw the text
+		float textWidth = (float)fontSize * 3.4f;
+		float textHeight = (float)fontSize * 4.8f;
+		
+		float textX = midX - textWidth / 2.0f;
+		float textY = midY - textHeight / 2.0f;
+		
+		text("THE BEST WAY TO PREDICT THE FUTURE IS TO INVENT IT", textX, textY, textWidth, textHeight, 40.0f);
+
+		// Use the mouse location to move the camera
 	    float xPer = ((float)mouseX) / (float)width;
 	    float yPer = ((float)mouseY) / (float)height;
 	    
