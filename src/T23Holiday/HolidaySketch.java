@@ -12,15 +12,16 @@ import processing.core.*;
 
 @SuppressWarnings("serial")
 public class HolidaySketch extends PApplet {
-	
-	public static void main(String args[]) {
-	    PApplet.main(new String[] { "--present", "T23Holiday.HolidaySketch" });
-	}
-	
+
 	public enum Direction {
 	    UP, RIGHT, DOWN, LEFT
 	};
 
+	// Required to run the applet in Processing's "Present" (fullscreen) mode
+	public static void main(String args[]) {
+	    PApplet.main(new String[] { "--present", "T23Holiday.HolidaySketch" });
+	}
+	
 	Boolean is_setup = false;
 
 	ArrayList<Triangle> triangles = new ArrayList<Triangle>();
@@ -40,6 +41,8 @@ public class HolidaySketch extends PApplet {
     float time = 0.0f;
     
     public void setup() {
+    	
+    	// This is required because the setup method is getting called twice
     	if (!is_setup) {
 			is_setup = true;
 			size(1400, 1050, OPENGL);
