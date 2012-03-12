@@ -11,13 +11,8 @@ import processing.core.*;
 
 // Big ups to http://wiki.processing.org/w/Triangulation
 
-
 @SuppressWarnings("serial")
 public class HolidaySketch extends PApplet {
-	
-	public static void main(String args[]) {
-	    PApplet.main(new String[] { "--present", "T23Holiday.HolidaySketch" });
-	}
 	
 	public enum Direction {
 	    UP, RIGHT, DOWN, LEFT
@@ -27,9 +22,9 @@ public class HolidaySketch extends PApplet {
 
 	ArrayList<Triangle> triangles = new ArrayList<Triangle>();
 	ArrayList<PVector> points = new ArrayList<PVector>();
-    private static int pointCount = 3500;
+    private static int pointCount = 5000;
     private Random random = new Random();
-    private int fontSize = 95;
+    private int fontSize = 66;
     
     private float rotationX = 20;
     private float rotationY = 20;
@@ -37,26 +32,31 @@ public class HolidaySketch extends PApplet {
     private Direction rotationDirection;
     private boolean isAutoRotating = true;
     
-    PFont font;
-    
-    float time = 0.0f;
+    SoftFullScreen fs;
     
     public void setup() {
     	if (!is_setup) {
 			is_setup = true;
-			size(1400, 1050, OPENGL);
+			size(420, 600, OPENGL);
 			hint(ENABLE_OPENGL_4X_SMOOTH);
+			 // Create the fullscreen object
+			  fs = new SoftFullScreen(this); 
+			  
+			  // enter fullscreen mode
+			  fs.enter(); 
 		}
-	
-    	strokeWeight(2.0f);
+    	
+    	strokeWeight(1.4f);
     	smooth();
 
-    	font = createFont("franchise-bold-webfont.ttf", fontSize);
+		textFont(createFont("franchise-bold-webfont.ttf", fontSize)); 
+		textAlign(CENTER);
 		
         points = generateRandomPoints();
         triangles = Triangulate.triangulate(points);
         
         rotationDirection = Direction.RIGHT;
+  
 	}
 	
     public void keyPressed() {
@@ -68,34 +68,15 @@ public class HolidaySketch extends PApplet {
     }
     
 	public void draw() {
-		textFont(font);
-		textAlign(CENTER);
-		
 	    background(0xffcb582c);
-	    stroke(0x44ffffff);
+	    stroke(0x33ffffff);
 	    noFill();
 	    		    
-	    time += 0.025f;
-
-	    float zMult = 8.5f;
-	    
 		// Draw the triangle edges
 	    for (Triangle t : triangles) {
-	    	PVector point1 = t.p1;
-	    	PVector point2 = t.p2;
-	    	PVector point3 = t.p3;	
-	    	
-	    	point1.z = sin(point1.y + point1.x + time);
-	    	point2.z = sin(point2.y + point2.x + time);
-	    	point3.z = sin(point3.y + point3.x + time);
-	    	
-	    	point1.z *= zMult;
-	    	point2.z *= zMult;
-	    	point3.z *= zMult;
-	    	
-	    	drawLine(point1, point2);
-	    	drawLine(point2, point3);
-	    	drawLine(point3, point1);
+	    	line(t.p1.x, t.p1.y, t.p1.z, t.p2.x, t.p2.y, t.p2.z);
+	    	line(t.p2.x, t.p2.y, t.p2.z, t.p3.x, t.p3.y, t.p3.z);
+	    	line(t.p3.x, t.p3.y, t.p3.z, t.p1.x, t.p1.y, t.p1.z);
 	    }
 	    
 	    float midX = (float)width / 2.0f;
@@ -108,34 +89,34 @@ public class HolidaySketch extends PApplet {
 		float textX = midX - textWidth / 2.0f;
 		float textY = midY - textHeight / 2.0f;
 		
-		for (int i = 45; i < 50; i++) {
+		for (int i = 35; i < 50; i++) {
 			text("THE BEST WAY TO PREDICT THE FUTURE IS TO INVENT IT", textX, textY, textWidth, textHeight, (float)i);
 		}
 		
 		if (isAutoRotating) {
 			switch (rotationDirection) {
 				case RIGHT:
-					rotationX += 3;
-					if (rotationX >= width - 20) {
+					rotationX++;
+					if (rotationX == width - 20) {
 						rotationDirection = Direction.DOWN;
 					}
 					break;
 				case DOWN:
-					rotationY += 3;
-					if (rotationY >= height - 20) {
+					rotationY++;
+					if (rotationY == height - 20) {
 						rotationDirection = Direction.LEFT;
 					}
 					break;
 				case LEFT:
-					rotationX -= 3;
-					if (rotationX <= 20) {
+					rotationX--;
+					if (rotationX == 20) {
 						rotationDirection = Direction.UP;
 					}
 					break;
 				case UP:
-					rotationY -= 3;
-					if (rotationY <= 20) {
-						rotationDirection = Direction.RIGHT;
+					rotationY--;
+					if (rotationY == 20) {
+						rotationDirection = Direction.LEFT;
 					}
 					break;
 			}
@@ -147,14 +128,10 @@ public class HolidaySketch extends PApplet {
 	    float xPer = (rotationX) / (float)width;
 	    float yPer = (rotationY) / (float)height;
 	    
-	    float eyeX = midX + (xPer - 0.5f) * midX * 0.28f;
-	    float eyeY = midY + (yPer - 0.5f) * midY * 0.28f;
+	    float eyeX = midX + (xPer - 0.5f) * midX * 0.57f;
+	    float eyeY = midY + (yPer - 0.5f) * midY * 0.57f;
 	    	    
 	    camera(eyeX, eyeY, (midY / tan(PI*60.0f / 360.0f)) / 1.2f, midX, midY, 0.0f, 0.0f, 1.0f, 0.0f);
-	}
-	
-	private void drawLine(PVector p1, PVector p2) {
-		line(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
 	}
 	
 	private ArrayList<PVector> generateRandomPoints() {
@@ -170,3 +147,4 @@ public class HolidaySketch extends PApplet {
 		return points;
 	}
 }
+
