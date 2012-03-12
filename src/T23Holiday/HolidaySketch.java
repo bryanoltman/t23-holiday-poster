@@ -5,8 +5,6 @@ import java.util.Random;
 
 import org.processing.wiki.triangulate.*;
 
-import fullscreen.*; 
-
 import processing.core.*;
 
 // Big ups to http://wiki.processing.org/w/Triangulation
